@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DoceFlow — entrando…</title>
+  <style>
+    body { font-family: system-ui, sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; background: #FFF1F2; color: #9D174D; }
+    .box { text-align: center; padding: 2rem; }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <p>Conectando ao DoceFlow…</p>
+    <p id="err" style="color:#be123c;display:none"></p>
+  </div>
+  <script>
+    (async function () {
+      const params = new URLSearchParams(location.search);
+      const launch = params.get('launch');
+      if (!launch) {
+        let b = location.pathname.replace(/\/index\.php(\/.*)?$/i, '').replace(/\/+$/, '') || '';
+        location.replace(b + '/index.php/app');
+        return;
+      }
+      function apiPath(path) {
+        let base = location.pathname.replace(/\/index\.php(\/.*)?$/i, '').replace(/\/+$/, '') || '';
+        return base + '/index.php' + path;
+      }
+      try {
+        const res = await fetch(apiPath('/api/v1/auth/exchange'), {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({ token: launch })
+        });
+        const raw = await res.text();
+        let data;
+        try {
+          data = JSON.parse(raw);
+        } catch (parseErr) {
+          throw new Error('Resposta inválida do servidor. Confira se o MySQL está ativo e tente Abrir app de novo.');
+        }
+        if (!res.ok || !data.tokens?.accessToken) {
+          throw new Error(data.erro || data.message || 'Falha na autenticação');
+        }
+        localStorage.setItem('df_access_token', data.tokens.accessToken);
+        localStorage.setItem('df_token_exp', String(Date.now() + (data.tokens.expiresIn || 28800) * 1000));
+        let appBase = location.pathname.replace(/\/index\.php(\/.*)?$/i, '').replace(/\/+$/, '') || '';
+        history.replaceState({}, '', appBase + '/index.php/app');
+        location.replace(appBase + '/index.php/app');
+      } catch (e) {
+        document.getElementById('err').style.display = 'block';
+        document.getElementById('err').textContent = e.message || String(e);
+      }
+    })();
+  </script>
+</body>
+</html>

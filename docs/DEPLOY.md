@@ -17,11 +17,19 @@ git push -u origin main
 
 Não commitar `.env` nem `vendor/` (use `composer install` no servidor).
 
+## cPanel (Git deploy)
+
+Arquivo `.cpanel.yml` na raiz. Confira `DEPLOYPATH` (ex.: `/home1/dncurs82/doceflow.xd360.com.br/`).
+
+**Document Root** do subdomínio = pasta **`public`** dentro desse path (ex.: `.../doceflow.xd360.com.br/public`).
+
+Edite `.env` manualmente após o deploy. Composer sem bin global: `docs/TROUBLESHOOTING_CPANEL.md`.
+
 ## Servidor — vhost
 
 | Host | DocumentRoot |
 |------|----------------|
-| `doceflow.xd360.com.br` | `.../doceflow/public` |
+| `doceflow.xd360.com.br` | `.../doceflow.xd360.com.br/public` |
 
 HTTPS. `mod_rewrite` ativo.
 

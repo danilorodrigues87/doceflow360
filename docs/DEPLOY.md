@@ -10,7 +10,7 @@ git init
 git remote add origin https://github.com/danilorodrigues87/doceflow360.git
 git add .
 git status
-git commit --trailer "Co-authored-by: Cursor <cursoragent@cursor.com>" -m "DoceFlow: backend + app licenciado"
+git commit -m "DoceFlow: backend + app licenciado"
 git branch -M main
 git push -u origin main
 ```

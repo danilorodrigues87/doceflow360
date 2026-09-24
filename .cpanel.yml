@@ -1,11 +1,13 @@
 ---
 # Git → cPanel DoceFlow
 # DEPLOYPATH = pasta raiz do clone (não use pasta de outro site).
-# No cPanel: subdomínio doceflow.xd360.com.br → Document Root = .../public
+# No cPanel: Document Root IDEAL = .../doceflow.xd360.com.br/public
+# Se apontar só para a raiz do repo, o .htaccess raiz redireciona para public/
 deployment:
   tasks:
     - export DEPLOYPATH=/home1/dncurs82/doceflow.xd360.com.br/
     - /bin/cp -R * $DEPLOYPATH
+    - /bin/cp .htaccess $DEPLOYPATH/
     - /bin/cp public/.htaccess $DEPLOYPATH/public/
     - test -f $DEPLOYPATH/.env || /bin/cp .env.example $DEPLOYPATH/.env
     - cd $DEPLOYPATH && (test -f composer.phar || /usr/local/bin/ea-php81 -r "copy('https://getcomposer.org/installer','composer-setup.php');" && /usr/local/bin/ea-php81 composer-setup.php --install-dir=. --filename=composer.phar && rm -f composer-setup.php)

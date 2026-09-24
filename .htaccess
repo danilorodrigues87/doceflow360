@@ -1,0 +1,6 @@
+# Se o subdominio apontar para a RAIZ do repo (erro comum), encaminha para public/
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule ^$ public/ [L]
+RewriteRule ^((?!public/).*)$ public/$1 [L,QSA]
+</IfModule>

@@ -27,6 +27,17 @@ ls vendor/autoload.php
 
 ## `.env` produção
 
-`JWT_KEY` e `PRODUCT_LAUNCH_SECRET` **iguais ao painel**.  
-`DOCEFLOW_APP_HOST=doceflow.xd360.com.br`  
-`XD360_API_URL=https://app.xd360.com.br`
+| DoceFlow | Painel XD360 |
+|----------|----------------|
+| `JWT_KEY` | **mesmo valor** |
+| `PRODUCT_LAUNCH_SECRET` | **mesmo valor** (sem aspas, sem espaço no fim) |
+| `XD360_API_URL=https://app.xd360.com.br` | `URL=https://app.xd360.com.br` |
+| `DOCEFLOW_APP_HOST=doceflow.xd360.com.br` | `DOCEFLOW_PUBLIC_URL=https://doceflow.xd360.com.br` |
+
+## "Token inválido ou expirado" ao Abrir app
+
+1. **Secret diferente** entre os dois `.env` → corrija e tente **Abrir app** de novo (token novo).
+2. **F5 na página do launch** → token é de uso único; clique Abrir app outra vez.
+3. **DoceFlow não alcança a API:** `XD360_API_URL` errado ou cURL desabilitado (código novo usa cURL).
+4. **Produto não no plano** → mensagem do painel: "Produto não licenciado neste plano."
+5. Teste: `scripts/testar-launch-exchange.php?token=...` (remover depois).

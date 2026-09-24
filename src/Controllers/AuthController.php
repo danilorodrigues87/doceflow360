@@ -22,8 +22,8 @@ final class AuthController {
 		}
 
 		$result = Xd360LaunchClient::exchangeLaunchToken($token);
-		if ($result === null) {
-			JsonResponse::error('Token inválido ou expirado.', 401);
+		if (empty($result['ok'])) {
+			JsonResponse::error((string)($result['message'] ?? 'Token inválido ou expirado.'), 401);
 			return;
 		}
 
